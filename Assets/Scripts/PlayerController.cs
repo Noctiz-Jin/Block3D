@@ -28,10 +28,13 @@ public class PlayerController : MonoBehaviour {
 	Transform cameraT;
 	CharacterController controller;
 
+	private PlayerAction playerAction;
+
 	void Start () {
 		animator = GetComponent<Animator> ();
 		cameraT = Camera.main.transform;
 		controller = GetComponent<CharacterController> ();
+		playerAction = GetComponent<PlayerAction> ();
 	}
 
 	void Update () {
@@ -44,7 +47,7 @@ public class PlayerController : MonoBehaviour {
 //Input.GetKeyDown (KeyCode.Space)
 		currentArmHandState = animator.GetCurrentAnimatorStateInfo(1);
 		if (Input.GetButton("Jump")) {
-
+			playerAction.CastSeed (transform);
 			Cast ();
 		}
 		// animator

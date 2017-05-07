@@ -22,6 +22,7 @@ public class BoxRoomNoLid : MonoBehaviour {
 	//Parent to all GameObjects
 	private GameObject boardHolder;
 	private GameObject obstacleHolder;
+	public GameObject obstacleLevel;
 
 
 	// boundary of the scene
@@ -37,7 +38,8 @@ public class BoxRoomNoLid : MonoBehaviour {
 		pz = lz - lz / 2 - 1;
 
 		boardHolder = new GameObject ("GroundLevel");
-		obstacleHolder = new GameObject ("ObstacleLevel");
+		obstacleHolder = Instantiate (obstacleLevel, new Vector3 (0, 0, 0), Quaternion.identity);
+		obstacleHolder.name = "ObstacleLevel";
 
 		SetupGround ();
 		SetupObstacle (obs1, dirt);
