@@ -6,11 +6,12 @@ public class ThirdPersonCamera : MonoBehaviour {
 
 	public bool lockCursor;
 	public float mouseSensitivity = 10;
-	public Transform target;
 	public float dstFromTarget = 4;
 	public Vector2 pitchMinMax = new Vector2 (0, 85);
 
 	public float rotationSmoothTime = .12f;
+
+	private Transform target;
 	Vector3 rotationSmoothVelocity;
 	Vector3 currentRotation;
 
@@ -19,6 +20,7 @@ public class ThirdPersonCamera : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		target = GameObject.Find("Player/CameraPivot").transform;
 		if (lockCursor) {
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
@@ -35,5 +37,9 @@ public class ThirdPersonCamera : MonoBehaviour {
 		transform.eulerAngles = currentRotation;
 
 		transform.position = target.position - transform.forward * dstFromTarget;
+	}
+
+	public void SwitchGhost () {
+		target = GameObject.Find("Ghost").transform;
 	}
 }

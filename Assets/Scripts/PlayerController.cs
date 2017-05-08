@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+	public ParticleSystem bubbleTrap;
+	public GameObject ghost;
+
 	public float walkSpeed = 2;
 	public float runSpeed = 6;
 	const float defaultWalkSpeed = 2;
@@ -20,6 +23,8 @@ public class PlayerController : MonoBehaviour {
 	float speedSmoothVelocity;
 	float currentSpeed;
 	float velocityY;
+
+	bool isDying = false;
 
 	AnimatorStateInfo currentArmHandState;
 	static int castState = Animator.StringToHash("Arm Hand Layer.Cast");
@@ -38,26 +43,30 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
-		// input
-		Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
-		Vector2 inputDir = input.normalized;
-		bool running = Input.GetKey (KeyCode.LeftShift);
+		if (isDying) {
 
-		Move (inputDir, running);
-//Input.GetKeyDown (KeyCode.Space)
-		currentArmHandState = animator.GetCurrentAnimatorStateInfo(1);
-		if (Input.GetButton("Jump")) {
-			playerAction.CastSeed (transform);
-			Cast ();
-		}
-		// animator
-		float animationSpeedPercent = ((running) ? currentSpeed / runSpeed : currentSpeed / walkSpeed * .5f);
-		animator.SetFloat ("speedPercent", animationSpeedPercent, speedSmoothTime, Time.deltaTime);
-		animator.SetFloat ("animationSpeed", walkSpeed/defaultWalkSpeed);
+		} else {
+			// input
+			Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
+			Vector2 inputDir = input.normalized;
+			bool running = Input.GetKey (KeyCode.LeftShift);
 
-		if(currentArmHandState.fullPathHash == castState && Input.GetButtonUp("Jump"))
-		{
-			animator.SetBool("isCasting", false);
+			Move (inputDir, running);
+	//Input.GetKeyDown (KeyCode.Space)
+			currentArmHandState = animator.GetCurrentAnimatorStateInfo(1);
+			if (Input.GetButton("Jump")) {
+				playerAction.CastSeed (transform);
+				Cast ();
+			}
+			// animator
+			float animationSpeedPercent = ((running) ? currentSpeed / runSpeed : currentSpeed / walkSpeed * .5f);
+			animator.SetFloat ("speedPercent", animationSpeedPercent, speedSmoothTime, Time.deltaTime);
+			animator.SetFloat ("animationSpeed", walkSpeed/defaultWalkSpeed);
+
+			if(currentArmHandState.fullPathHash == castState && Input.GetButtonUp("Jump"))
+			{
+				animator.SetBool("isCasting", false);
+			}
 		}
 	}
 
@@ -98,6 +107,17 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+	public void Dying() {
+
+		if (isDying) return;
+
+		Transform bodyTransform = transform.Find("BodyCenter");
+		Instantiate (bubbleTrap, bodyTransform.position, Quaternion.identity);
+		isDying = true;
+		animator.SetBool("isDying", true);
+		Invoke("Dead", 7f);
+	}
+
 	float GetModifiedSmoothTime(float smoothTime) {
 		if (controller.isGrounded) {
 			return smoothTime;
@@ -107,5 +127,16 @@ public class PlayerController : MonoBehaviour {
 			return float.MaxValue;
 		}
 		return smoothTime / airControlPercent;
+	}
+
+	void Dead() {
+
+		GameObject ghostGO = Instantiate(ghost, transform.Find("BodyCenter").position, Quaternion.identity) as GameObject;
+
+		ghostGO.name = "Ghost";
+
+		cameraT.GetComponent<ThirdPersonCamera> ().SwitchGhost();
+
+		gameObject.SetActive(false);
 	}
 }

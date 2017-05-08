@@ -80,7 +80,7 @@ public class SeedController : MonoBehaviour {
 		BoomEffect (damagePosition);
 
 		if (damagePosition == playerRoundPosition) {
-			Debug.Log("Hit");
+			player.GetComponent<PlayerController> ().Dying();
 			return true;
 		} else {
 			return false;

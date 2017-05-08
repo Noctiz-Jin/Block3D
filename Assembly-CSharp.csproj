@@ -48,9 +48,11 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\BoomController.cs" />
      <Compile Include="Assets\Scripts\BoxRoomNoLid.cs" />
+     <Compile Include="Assets\Scripts\BubbleController.cs" />
      <Compile Include="Assets\Scripts\Extern\ExplosionPhysicsForce.cs" />
      <Compile Include="Assets\Scripts\Extern\ParticleSystemMultiplier.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\GhostController.cs" />
      <Compile Include="Assets\Scripts\Loader.cs" />
      <Compile Include="Assets\Scripts\MyTool.cs" />
      <Compile Include="Assets\Scripts\PlayerAction.cs" />
