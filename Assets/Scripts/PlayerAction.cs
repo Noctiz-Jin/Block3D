@@ -12,19 +12,22 @@ public class PlayerAction : MonoBehaviour {
 
 	void Start () {
 		obstacleHolder = GameObject.Find ("ObstacleLevel");
-		castPosition.y = 1;
 		seeds = new List<GameObject> ();
 	}
 
 	public void CastSeed (Transform playerTransform) {
-		castPosition.x = Mathf.Round(playerTransform.position.x);
-		castPosition.z = Mathf.Round(playerTransform.position.z);
+		castPosition = MyTool.RoundPlayerPosition (playerTransform);
 
+		seeds.RemoveAll(i => i == null);
 		foreach (GameObject seed in seeds)
 		{
 			// stop duplicate casting
-			if (seed.transform.position == castPosition)
+			if (seed == null) {
+
+			} else {
+				if (seed.transform.position == castPosition)
 				return;
+			}
 		}
 
 		GameObject castSeed = Instantiate (seedPrefab, castPosition, Quaternion.identity);

@@ -68,16 +68,16 @@ public class BoxRoomNoLid : MonoBehaviour {
 
 		// build wall invisible
 		for (int x = nx; x < px + 1; x++) {
-			CreateStaticBlock (x, 1, nz - 1, invisible, boardHolder);
-			CreateStaticBlock (x, 1, pz + 1, invisible, boardHolder);
+			CreateStaticBlock (x, 1, nz - 1, invisible, obstacleHolder);
+			CreateStaticBlock (x, 1, pz + 1, invisible, obstacleHolder);
 			CreateStaticBlock (x, 2, nz - 1, invisible, boardHolder);
 			CreateStaticBlock (x, 2, pz + 1, invisible, boardHolder);
 			CreateStaticBlock (x, 3, nz - 1, invisible, boardHolder);
 			CreateStaticBlock (x, 3, pz + 1, invisible, boardHolder);
 		}
 		for (int z = nz; z < pz + 1; z++) {
-			CreateStaticBlock (nx - 1, 1, z, invisible, boardHolder);
-			CreateStaticBlock (px + 1, 1, z, invisible, boardHolder);
+			CreateStaticBlock (nx - 1, 1, z, invisible, obstacleHolder);
+			CreateStaticBlock (px + 1, 1, z, invisible, obstacleHolder);
 			CreateStaticBlock (nx - 1, 2, z, invisible, boardHolder);
 			CreateStaticBlock (px + 1, 2, z, invisible, boardHolder);
 			CreateStaticBlock (nx - 1, 3, z, invisible, boardHolder);
