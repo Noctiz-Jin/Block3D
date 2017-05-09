@@ -115,6 +115,7 @@ public class PlayerController : MonoBehaviour {
 		Instantiate (bubbleTrap, bodyTransform.position, Quaternion.identity);
 		isDying = true;
 		animator.SetBool("isDying", true);
+		animator.SetBool("isCasting", false);
 		Invoke("Dead", 7f);
 	}
 

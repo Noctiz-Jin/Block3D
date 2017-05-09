@@ -18,11 +18,12 @@ public class BoxRoomNoLid : MonoBehaviour {
 	public GameObject grass;
 	public GameObject stone;
 	public GameObject invisible;
+	public GameObject obstacle;
 
 	//Parent to all GameObjects
 	private GameObject boardHolder;
 	private GameObject obstacleHolder;
-	public GameObject obstacleLevel;
+	private GameObject obstacleLevel;
 
 
 	// boundary of the scene
@@ -38,7 +39,7 @@ public class BoxRoomNoLid : MonoBehaviour {
 		pz = lz - lz / 2 - 1;
 
 		boardHolder = new GameObject ("GroundLevel");
-		obstacleHolder = Instantiate (obstacleLevel, new Vector3 (0, 0, 0), Quaternion.identity);
+		obstacleHolder = new GameObject ("ObstacleLevel");
 		obstacleHolder.name = "ObstacleLevel";
 
 		SetupGround ();
@@ -47,12 +48,12 @@ public class BoxRoomNoLid : MonoBehaviour {
 	}
 
 	private void SetupObstacle (int obs, GameObject go) {
-		for (int x = nx + obs; x < px - obs + 1; x++) {
+		for (int x = nx + obs + 1; x < px - obs + 1; x++) {
 			CreateObstacleBlock(x, 1, nz + obs, go, obstacleHolder);
 			CreateObstacleBlock(x, 1, pz - obs, go, obstacleHolder);
 		}
 
-		for (int z = nz + obs; z < pz - obs + 1; z++) {
+		for (int z = nz + obs + 1; z < pz - obs + 1; z++) {
 			CreateObstacleBlock (nz + obs, 1, z, go, obstacleHolder);
 			CreateObstacleBlock (px - obs, 1, z, go, obstacleHolder);
 		}
@@ -95,9 +96,17 @@ public class BoxRoomNoLid : MonoBehaviour {
 
 	private void CreateBlock(int x, int y, int z, GameObject material, GameObject parent, bool isStatic, string tag) {
 		GameObject block = Instantiate (material, new Vector3 (x, y, z), Quaternion.identity);
-		block.transform.SetParent (parent.transform);
 		block.isStatic = isStatic;
 		block.tag = tag;
+
+		if (isStatic == true) {
+			block.transform.SetParent (parent.transform);
+		} else {
+			GameObject obstacleGO = Instantiate (obstacle, new Vector3 (x, y, z), Quaternion.identity);
+			obstacleGO.tag = tag;
+			block.transform.SetParent (obstacleGO.transform);
+			obstacleGO.transform.SetParent (parent.transform);
+		}
 	}
 
 
