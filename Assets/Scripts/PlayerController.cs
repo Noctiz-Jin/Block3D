@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour {
 
 	public ParticleSystem bubbleTrap;
 	public GameObject ghost;
+	public Camera playerCamera;
+	public GameObject standingAura;
 
 	public float walkSpeed = 2;
 	public float runSpeed = 6;
@@ -37,9 +39,12 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () {
 		animator = GetComponent<Animator> ();
-		cameraT = Camera.main.transform;
 		controller = GetComponent<CharacterController> ();
 		playerAction = GetComponent<PlayerAction> ();
+
+		SetupCamera();
+		SetupStandingAura();
+		cameraT = Camera.main.transform;
 	}
 
 	void Update () {
@@ -139,5 +144,13 @@ public class PlayerController : MonoBehaviour {
 		cameraT.GetComponent<ThirdPersonCamera> ().SwitchGhost();
 
 		gameObject.SetActive(false);
+	}
+
+	void SetupCamera () {
+		Instantiate(playerCamera, new Vector3(0, 0, 0), Quaternion.identity).name = "PlayerCamera";
+	}
+
+	void SetupStandingAura () {
+		Instantiate(standingAura, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0)).name = "StandingAura";
 	}
 }

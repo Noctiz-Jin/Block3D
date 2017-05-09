@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StandingAura : MonoBehaviour {
-
-	public Transform target;
+	
+	private Transform player;
 
 	Vector3 position;
 	// Use this for initialization
@@ -14,6 +14,7 @@ public class StandingAura : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.position = MyTool.RoundPlayerPositionWithY(target, 0.52f);
+		player = GameObject.Find("Player").transform;
+		transform.position = MyTool.RoundPlayerPositionWithY(player, 0.52f);
 	}
 }
