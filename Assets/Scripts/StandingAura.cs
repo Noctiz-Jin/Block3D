@@ -14,7 +14,12 @@ public class StandingAura : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		player = GameObject.Find("Player").transform;
-		transform.position = MyTool.RoundPlayerPositionWithY(player, 0.52f);
+
+		GameObject player = GameObject.Find("Player");
+		if (player == null) {
+			gameObject.SetActive (false);
+		} else {
+			transform.position = MyTool.RoundPlayerPositionWithY(player.transform, 0.52f);
+		}
 	}
 }

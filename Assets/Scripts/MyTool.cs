@@ -15,4 +15,10 @@ public class MyTool {
 		playerRoundPosition.z = Mathf.Round(player.position.z);
 		return playerRoundPosition;
 	}
+
+	public static float MapNumber (float value, float inMin, float inMax, float outMin, float outMax)
+	{
+		if ((inMax - inMin) == 0) return -1f;
+		return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+	}
 }
