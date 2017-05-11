@@ -46,21 +46,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\BarStats.cs" />
      <Compile Include="Assets\Scripts\BoxRoomNoLid.cs" />
      <Compile Include="Assets\Scripts\Extern\ExplosionPhysicsForce.cs" />
      <Compile Include="Assets\Scripts\Extern\ParticleSystemMultiplier.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GhostController.cs" />
      <Compile Include="Assets\Scripts\Loader.cs" />
-     <Compile Include="Assets\Scripts\MenuUIController.cs" />
      <Compile Include="Assets\Scripts\MyTool.cs" />
      <Compile Include="Assets\Scripts\ObstacleController.cs" />
      <Compile Include="Assets\Scripts\OneTimeController.cs" />
-     <Compile Include="Assets\Scripts\PlayerAction.cs" />
-     <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerAction.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerStats.cs" />
+     <Compile Include="Assets\Scripts\Player\StandingAura.cs" />
+     <Compile Include="Assets\Scripts\Player\ThirdPersonCamera.cs" />
      <Compile Include="Assets\Scripts\SeedController.cs" />
-     <Compile Include="Assets\Scripts\StandingAura.cs" />
-     <Compile Include="Assets\Scripts\ThirdPersonCamera.cs" />
+     <Compile Include="Assets\Scripts\UI\BarUIController.cs" />
+     <Compile Include="Assets\Scripts\UI\MenuUIController.cs" />
      <Compile Include="Assets\Scripts\WorldManager.cs" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
      <None Include="Assets\Shaders\Additive_Base.shader" />

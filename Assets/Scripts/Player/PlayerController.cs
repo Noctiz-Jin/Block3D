@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour {
 	Animator animator;
 	Transform cameraT;
 	CharacterController controller;
+	PlayerStats playerStats;
 
 	private PlayerAction playerAction;
 
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour {
 		animator = GetComponent<Animator> ();
 		controller = GetComponent<CharacterController> ();
 		playerAction = GetComponent<PlayerAction> ();
+		playerStats = GetComponent<PlayerStats> ();
 
 		SetupCamera();
 		SetupStandingAura();
@@ -55,6 +57,10 @@ public class PlayerController : MonoBehaviour {
 			Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 			Vector2 inputDir = input.normalized;
 			bool running = Input.GetKey (KeyCode.LeftShift);
+
+			if (running && (inputDir.x != 0 || inputDir.y != 0)) {
+				running = playerStats.Run();
+			}
 
 			Move (inputDir, running);
 	//Input.GetKeyDown (KeyCode.Space)
@@ -72,6 +78,9 @@ public class PlayerController : MonoBehaviour {
 			{
 				animator.SetBool("isCasting", false);
 			}
+
+			// update all player stats
+			playerStats.UpdatePlayerStats();
 		}
 	}
 
