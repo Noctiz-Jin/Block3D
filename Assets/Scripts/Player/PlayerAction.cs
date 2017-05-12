@@ -10,9 +10,12 @@ public class PlayerAction : MonoBehaviour {
 	private Vector3 castPosition;
 	private List<GameObject> seeds;
 
+	private PlayerStats playStats;
 	void Start () {
 		obstacleHolder = GameObject.Find ("ObstacleLevel");
 		seeds = new List<GameObject> ();
+
+		playStats = GetComponent<PlayerStats> ();
 	}
 
 	public void CastSeed (Transform playerTransform) {
@@ -31,8 +34,21 @@ public class PlayerAction : MonoBehaviour {
 		}
 
 		GameObject castSeed = Instantiate (seedPrefab, castPosition, Quaternion.identity);
+		castSeed.GetComponent<SeedController>().damageRange = playStats.GetSeedRange();
 		seeds.Add(castSeed);
 		castSeed.transform.SetParent (obstacleHolder.transform);
 	}
 
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.tag == "Pickable")
+		{
+			if (Random.Range(0, 2) == 0) {
+				playStats.AddSeedCapacity(Random.Range(1, 3));
+			} else {
+				playStats.AddSeedRange(Random.Range(1, 3));
+			}
+		}
+	}
 }

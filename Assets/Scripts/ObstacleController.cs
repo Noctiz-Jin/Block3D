@@ -19,6 +19,6 @@ public class ObstacleController : MonoBehaviour {
 	}
 
 	void blockDestroyEffect () {
-		Instantiate (blockDestroy, transform.position, Quaternion.identity);
+		Instantiate (blockDestroy, transform.position, Quaternion.Euler(-90 ,0 ,0));
 	}
 }

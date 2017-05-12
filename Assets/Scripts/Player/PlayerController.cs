@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour {
 			currentArmHandState = animator.GetCurrentAnimatorStateInfo(1);
 			if (Input.GetButton("Jump")) {
 				playerAction.CastSeed (transform);
-				Cast ();
+				animator.SetBool("isCasting", true);
 			}
 			// animator
 			float animationSpeedPercent = ((running) ? currentSpeed / runSpeed : currentSpeed / walkSpeed * .5f);
@@ -112,14 +112,10 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
-	void Cast() {
 //		if (controller.isGrounded) {
 //			float jumpVelocity = Mathf.Sqrt (-2 * gravity * jumpHeight);
 //			velocityY = jumpVelocity;
 //		}
-		animator.SetBool("isCasting", true);
-
-	}
 
 	public void Dying() {
 

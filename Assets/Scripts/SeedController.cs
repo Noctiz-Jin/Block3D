@@ -7,7 +7,7 @@ public class SeedController : MonoBehaviour {
 	public float fuseTime = 2.42f;
 	[Range(0, 1)]
 	public float transparency = 0.5f;
-	public int damageRange = 5;
+	public int damageRange = 1;
 	public ParticleSystem boom;
 
 	private Transform player;
