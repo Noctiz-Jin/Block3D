@@ -146,6 +146,8 @@ public class PlayerController : MonoBehaviour {
 
 		ghostGO.name = "Ghost";
 
+		GameObject.Find("MainLight").GetComponent<MenuUIController>().SecondCanvasOn();
+
 		cameraT.GetComponent<ThirdPersonCamera> ().SwitchGhost();
 
 		gameObject.SetActive(false);

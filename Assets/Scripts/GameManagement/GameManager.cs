@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
 			instance = this;
 		else if (instance != this)
 			Destroy (gameObject);
-		DontDestroyOnLoad (gameObject);
+		//DontDestroyOnLoad (gameObject);
 		Debug.Log("--GameManager Loaded--");
 
 		worldManager = GetComponent<WorldManager> ();
@@ -25,11 +25,6 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
 	}
 }

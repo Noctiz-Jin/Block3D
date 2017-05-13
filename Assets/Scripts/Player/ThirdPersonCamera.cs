@@ -21,25 +21,36 @@ public class ThirdPersonCamera : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		target = GameObject.Find("Player/CameraPivot").transform;
-		if (lockCursor) {
-			Cursor.lockState = CursorLockMode.Locked;
-			Cursor.visible = false;
-		}
+		SwitchCursorLock(true);
 	}
 	
 	// Update is called once per frame
 	void LateUpdate () {
-		yaw += Input.GetAxis ("Mouse X") * mouseSensitivity;
-		pitch -= Input.GetAxis ("Mouse Y") * mouseSensitivity;
-		pitch = Mathf.Clamp (pitch, pitchMinMax.x, pitchMinMax.y);
 
-		currentRotation = Vector3.SmoothDamp (currentRotation, new Vector3 (pitch, yaw), ref rotationSmoothVelocity, rotationSmoothTime);
-		transform.eulerAngles = currentRotation;
+		if (Input.GetButtonDown("Cancel")) {
+			SwitchCursorLock(!lockCursor);
+		}
 
-		transform.position = target.position - transform.forward * dstFromTarget;
+		if (lockCursor) {
+			yaw += Input.GetAxis ("Mouse X") * mouseSensitivity;
+			pitch -= Input.GetAxis ("Mouse Y") * mouseSensitivity;
+			pitch = Mathf.Clamp (pitch, pitchMinMax.x, pitchMinMax.y);
+
+			currentRotation = Vector3.SmoothDamp (currentRotation, new Vector3 (pitch, yaw), ref rotationSmoothVelocity, rotationSmoothTime);
+			transform.eulerAngles = currentRotation;
+
+			transform.position = target.position - transform.forward * dstFromTarget;
+		}
 	}
 
 	public void SwitchGhost () {
 		target = GameObject.Find("Ghost").transform;
+	}
+
+	public void SwitchCursorLock (bool isLock)
+	{
+		lockCursor = isLock;
+		Cursor.lockState = isLock ? CursorLockMode.Locked : CursorLockMode.None;
+		Cursor.visible = !isLock;
 	}
 }

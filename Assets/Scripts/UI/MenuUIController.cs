@@ -6,30 +6,30 @@ using UnityEngine.SceneManagement;
 
 public class MenuUIController : MonoBehaviour {
 
-	public Canvas EntryCanvas;
-	public Canvas CreditsCanvas;
+	public Canvas FirstCanvas;
+	public Canvas SecondCanvas;
 	
 	void Awake () 
 	{
-		EntryCanvasOn ();
+		FirstCanvasOn ();
 	}
 
-	public void CreditsCanvasOn () 
+	public void FirstCanvasOn () 
 	{
-		CreditsCanvas.gameObject.SetActive (true);
-		EntryCanvas.gameObject.SetActive (false);
+		FirstCanvas.gameObject.SetActive (true);
+		SecondCanvas.gameObject.SetActive (false);
 	}
 
-	public void EntryCanvasOn () 
+	public void SecondCanvasOn () 
 	{
-		CreditsCanvas.gameObject.SetActive (false);
-		EntryCanvas.gameObject.SetActive (true);
+		FirstCanvas.gameObject.SetActive (false);
+		SecondCanvas.gameObject.SetActive (true);
 	}
 
-	public void LoadGameScene ()
+	public void LoadGameScene (int value)
 	{
 		Debug.Log("--- Load Game ---");
 
-		SceneManager.LoadScene (1);
+		SceneManager.LoadScene (value);
 	}
 }
