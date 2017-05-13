@@ -18,7 +18,12 @@ public class PlayerAction : MonoBehaviour {
 		playStats = GetComponent<PlayerStats> ();
 	}
 
-	public void CastSeed (Transform playerTransform) {
+	public void CastSeed (Transform playerTransform)
+	{
+		if (playStats.GetSeedNumber() <= 0) {
+			return;
+		}
+
 		castPosition = MyTool.RoundPlayerPosition (playerTransform);
 
 		seeds.RemoveAll(i => i == null);
@@ -33,6 +38,8 @@ public class PlayerAction : MonoBehaviour {
 			}
 		}
 
+		playStats.CastSeed(1);
+
 		GameObject castSeed = Instantiate (seedPrefab, castPosition, Quaternion.identity);
 		castSeed.GetComponent<SeedController>().damageRange = playStats.GetSeedRange();
 		seeds.Add(castSeed);
@@ -45,9 +52,9 @@ public class PlayerAction : MonoBehaviour {
 		if (other.gameObject.tag == "Pickable")
 		{
 			if (Random.Range(0, 2) == 0) {
-				playStats.AddSeedCapacity(Random.Range(1, 3));
+				playStats.AddSeedCapacity(1);
 			} else {
-				playStats.AddSeedRange(Random.Range(1, 3));
+				playStats.AddSeedRange(1);
 			}
 		}
 	}

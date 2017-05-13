@@ -54,5 +54,19 @@ public class PlayerStats : MonoBehaviour {
 
 	public void AddSeedCapacity (int value) {
 		seedCapacity.TextValue += value;
+		seedCapacity.TextCapacity += value;
+	}
+
+	public int GetSeedNumber () {
+		return seedCapacity.TextValue;
+	}
+
+	public void CastSeed (int value)
+	{
+		seedCapacity.TextValue -= value;
+	}
+
+	public void SeedBoomRetrieve (int value) {
+		seedCapacity.TextValue += value;
 	}
 }

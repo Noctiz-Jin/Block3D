@@ -118,6 +118,8 @@ public class SeedController : MonoBehaviour {
 			}
 		}
 
+		player.gameObject.GetComponent<PlayerStats>().SeedBoomRetrieve(1);
+
 		Destroy(gameObject);
 	}
 

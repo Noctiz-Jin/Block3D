@@ -9,6 +9,8 @@ public class ItemStats
 	[SerializeField]
 	private int textValue;
 	[SerializeField]
+	private int textCapacity;
+	[SerializeField]
 	private ItemTextUIController itemText;
 
 	public int TextValue
@@ -25,8 +27,23 @@ public class ItemStats
 		}
 	}
 
+	public int TextCapacity
+	{
+		get
+		{
+			return textCapacity;
+		}
+
+		set
+		{
+			this.textCapacity = value;
+			itemText.CapacityValue = textCapacity;
+		}
+	}
+
 	public void Initialize()
 	{
 		this.TextValue = textValue;
+		this.TextCapacity = textCapacity;
 	}
 }
