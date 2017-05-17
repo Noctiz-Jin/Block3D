@@ -41,8 +41,12 @@ public class ItemStats
 		}
 	}
 
-	public void Initialize()
+	public void Initialize(ItemTextUIController itemTextUIController, int textValueInt, int textCapacityInt)
 	{
+		itemText = itemTextUIController;
+		textValue = textValueInt;
+		textCapacity = textCapacityInt;
+
 		this.TextValue = textValue;
 		this.TextCapacity = textCapacity;
 	}

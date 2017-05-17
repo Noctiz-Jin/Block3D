@@ -8,10 +8,14 @@ public class MenuUIController : MonoBehaviour {
 
 	public Canvas FirstCanvas;
 	public Canvas SecondCanvas;
-	
+
+	[SerializeField]
+	private Camera playerCamera;
+
 	void Awake () 
 	{
 		FirstCanvasOn ();
+		SetupCamera();
 	}
 
 	public void FirstCanvasOn () 
@@ -31,5 +35,10 @@ public class MenuUIController : MonoBehaviour {
 		Debug.Log("--- Load Game ---");
 
 		SceneManager.LoadScene (value);
+	}
+
+	void SetupCamera () {
+		if (playerCamera == null) return;
+		Instantiate(playerCamera, new Vector3(0, 22, -37), Quaternion.identity).name = "PlayerCamera";
 	}
 }
