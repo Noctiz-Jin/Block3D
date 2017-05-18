@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : NetworkBehaviour {
 
 	public ParticleSystem bubbleTrap;
 	public GameObject ghost;
@@ -48,9 +49,14 @@ public class PlayerController : MonoBehaviour {
 		playerAction = GetComponent<PlayerAction> ();
 		playerStats = GetComponent<PlayerStats> ();
 
-		SetupCamera();
-		SetupStandingAura();
-		cameraT = Camera.main.transform;
+
+		if (!isLocalPlayer) {
+			gameObject.name = "OtherPlayer";
+		} else {
+			SetupCamera();
+			SetupStandingAura();
+			cameraT = Camera.main.transform;
+		}
 	}
 
 	void Update () {
