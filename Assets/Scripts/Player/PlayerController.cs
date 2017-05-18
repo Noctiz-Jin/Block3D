@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : NetworkBehaviour {
 
 	public ParticleSystem bubbleTrap;
 	public GameObject ghost;
-	public Camera playerCamera;
 	public GameObject standingAura;
 
 	public float walkSpeed = 2;
@@ -38,15 +38,25 @@ public class PlayerController : MonoBehaviour {
 
 	private PlayerAction playerAction;
 
+	void Awake () {
+		GameObject.Find("MainLight").GetComponent<MenuUIController>().SecondCanvasOn();
+		gameObject.name = "Player";
+	}
+
 	void Start () {
 		animator = GetComponent<Animator> ();
 		controller = GetComponent<CharacterController> ();
 		playerAction = GetComponent<PlayerAction> ();
 		playerStats = GetComponent<PlayerStats> ();
 
-		SetupCamera();
-		SetupStandingAura();
-		cameraT = Camera.main.transform;
+
+		if (!isLocalPlayer) {
+			gameObject.name = "OtherPlayer";
+		} else {
+			SetupCamera();
+			SetupStandingAura();
+			cameraT = Camera.main.transform;
+		}
 	}
 
 	void Update () {
@@ -146,18 +156,20 @@ public class PlayerController : MonoBehaviour {
 
 		ghostGO.name = "Ghost";
 
-		GameObject.Find("MainLight").GetComponent<MenuUIController>().SecondCanvasOn();
+		GameObject.Find("MainLight").GetComponent<MenuUIController>().FirstCanvasOn();
 
 		cameraT.GetComponent<ThirdPersonCamera> ().SwitchGhost();
 
 		gameObject.SetActive(false);
 	}
 
-	void SetupCamera () {
-		Instantiate(playerCamera, new Vector3(0, 0, 0), Quaternion.identity).name = "PlayerCamera";
+	void SetupStandingAura () {
+		GameObject aura = Instantiate(standingAura, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0));
+		aura.name = "StandingAura";
+		aura.transform.SetParent(gameObject.transform);
 	}
 
-	void SetupStandingAura () {
-		Instantiate(standingAura, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0)).name = "StandingAura";
+	void SetupCamera () {
+		GameObject.Find("PlayerCamera").GetComponent<ThirdPersonCamera>().SwitchPlayer();
 	}
 }

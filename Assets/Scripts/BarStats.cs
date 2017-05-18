@@ -41,8 +41,12 @@ public class BarStats
 		}
 	}
 
-	public void Initialize()
+	public void Initialize(BarUIController barUIController, float maxValFloat, float currentValFloat)
 	{
+		bar = barUIController;
+		maxVal = maxValFloat;
+		currentVal = currentValFloat;
+
 		this.MaxVal = maxVal;
 		this.CurrentVal = currentVal;
 	}

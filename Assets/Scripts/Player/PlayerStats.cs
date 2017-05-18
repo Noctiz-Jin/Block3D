@@ -22,9 +22,9 @@ public class PlayerStats : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		stamina.Initialize();
-		seedRange.Initialize();
-		seedCapacity.Initialize();
+		stamina.Initialize(GameObject.Find("StaminaBar").GetComponent<BarUIController>(), 100f, 100f);
+		seedRange.Initialize(GameObject.Find("ItemText2").GetComponent<ItemTextUIController>(), 1, -1);
+		seedCapacity.Initialize(GameObject.Find("ItemText").GetComponent<ItemTextUIController>(), 1, 1);
 	}
 
 	// MAIN update every player stats

@@ -15,17 +15,18 @@ public class ThirdPersonCamera : MonoBehaviour {
 	Vector3 rotationSmoothVelocity;
 	Vector3 currentRotation;
 
+	bool isFocused;
 	float yaw;
 	float pitch;
 
 	// Use this for initialization
 	void Start () {
-		target = GameObject.Find("Player/CameraPivot").transform;
-		SwitchCursorLock(true);
+		SwitchNoFocus();
 	}
 	
 	// Update is called once per frame
 	void LateUpdate () {
+		if (isFocused == false) return;
 
 		if (Input.GetButtonDown("Cancel")) {
 			SwitchCursorLock(!lockCursor);
@@ -44,13 +45,28 @@ public class ThirdPersonCamera : MonoBehaviour {
 	}
 
 	public void SwitchGhost () {
+		isFocused = true;
+		SwitchCursorLock(true);
 		target = GameObject.Find("Ghost").transform;
 	}
 
-	public void SwitchCursorLock (bool isLock)
+	private void SwitchCursorLock (bool isLock)
 	{
 		lockCursor = isLock;
 		Cursor.lockState = isLock ? CursorLockMode.Locked : CursorLockMode.None;
 		Cursor.visible = !isLock;
+	}
+
+	public void SwitchPlayer () {
+		isFocused = true;
+		SwitchCursorLock(true);
+		target = GameObject.Find("Player/CameraPivot").transform;
+	}
+
+	public void SwitchNoFocus () {
+		isFocused = false;
+		target = null;
+		SwitchCursorLock(false);
+		gameObject.transform.LookAt (Vector3.zero);
 	}
 }

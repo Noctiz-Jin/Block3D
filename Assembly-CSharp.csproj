@@ -55,6 +55,8 @@
      <Compile Include="Assets\Scripts\GameManagement\WorldManager.cs" />
      <Compile Include="Assets\Scripts\ItemStats.cs" />
      <Compile Include="Assets\Scripts\MyTool.cs" />
+     <Compile Include="Assets\Scripts\NetworkHUD_custom.cs" />
+     <Compile Include="Assets\Scripts\NetworkManger_custom.cs" />
      <Compile Include="Assets\Scripts\ObstacleController.cs" />
      <Compile Include="Assets\Scripts\OneTimeController.cs" />
      <Compile Include="Assets\Scripts\PickableController.cs" />
@@ -62,6 +64,7 @@
      <Compile Include="Assets\Scripts\Player\PlayerAction.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerStats.cs" />
+     <Compile Include="Assets\Scripts\Player\SetupLocalPlayer.cs" />
      <Compile Include="Assets\Scripts\Player\StandingAura.cs" />
      <Compile Include="Assets\Scripts\Player\ThirdPersonCamera.cs" />
      <Compile Include="Assets\Scripts\SeedController.cs" />
