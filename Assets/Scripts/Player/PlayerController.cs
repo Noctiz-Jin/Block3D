@@ -9,6 +9,7 @@ public class PlayerController : NetworkBehaviour {
 	public GameObject ghost;
 	public GameObject standingAura;
 
+	////// Movement Assets //////
 	public float walkSpeed = 2;
 	public float runSpeed = 6;
 	const float defaultWalkSpeed = 2;
@@ -17,26 +18,23 @@ public class PlayerController : NetworkBehaviour {
 //	public float jumpHeight = 1;
 	[Range(0,1)]
 	public float airControlPercent;
-
 	public float turnSmoothTime = 0.05f;
 	float turnSmoothVelocity;
-
 	public float speedSmoothTime = 0.1f;
 	float speedSmoothVelocity;
 	float currentSpeed;
 	float velocityY;
+	////// ------ //////
 
-	bool isDying = false;
-
+	////// Components //////
+	private Animator animator;
+	private Transform cameraT;
+	private CharacterController controller;
+	private PlayerStats playerStats;
+	private PlayerAction playerAction;
 	AnimatorStateInfo currentArmHandState;
 	static int castState = Animator.StringToHash("Arm Hand Layer.Cast");
-
-	Animator animator;
-	Transform cameraT;
-	CharacterController controller;
-	PlayerStats playerStats;
-
-	private PlayerAction playerAction;
+	////// ------ //////
 
 	void Awake () {
 		GameObject.Find("MainLight").GetComponent<MenuUIController>().SecondCanvasOn();
@@ -49,7 +47,6 @@ public class PlayerController : NetworkBehaviour {
 		playerAction = GetComponent<PlayerAction> ();
 		playerStats = GetComponent<PlayerStats> ();
 
-
 		if (!isLocalPlayer) {
 			gameObject.name = "OtherPlayer";
 		} else {
@@ -60,10 +57,12 @@ public class PlayerController : NetworkBehaviour {
 	}
 
 	void Update () {
-		if (isDying) {
+		if (!isLocalPlayer) return;
+
+		if (playerStats.isDying) {
 
 		} else {
-			// input
+			// Parsing Input
 			Vector2 input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 			Vector2 inputDir = input.normalized;
 			bool running = Input.GetKey (KeyCode.LeftShift);
@@ -72,8 +71,9 @@ public class PlayerController : NetworkBehaviour {
 				running = playerStats.Run();
 			}
 
+			// Move Character
 			Move (inputDir, running);
-	//Input.GetKeyDown (KeyCode.Space)
+
 			currentArmHandState = animator.GetCurrentAnimatorStateInfo(1);
 			if (Input.GetButton("Jump")) {
 				playerAction.CastSeed (transform);
@@ -129,11 +129,11 @@ public class PlayerController : NetworkBehaviour {
 
 	public void Dying() {
 
-		if (isDying) return;
+		if (playerStats.isDying) return;
 
 		Transform bodyTransform = transform.Find("BodyCenter");
 		Instantiate (bubbleTrap, bodyTransform.position, Quaternion.identity);
-		isDying = true;
+		playerStats.isDying = true;
 		animator.SetBool("isDying", true);
 		animator.SetBool("isCasting", false);
 		Invoke("Dead", 7f);

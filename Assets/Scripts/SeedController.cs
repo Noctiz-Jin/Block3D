@@ -152,6 +152,7 @@ public class SeedController : MonoBehaviour {
 
 	bool HitPlayer(Vector3 damagePosition)
 	{
+		//GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 		Vector3 playerRoundPosition = MyTool.RoundPlayerPosition (player);
 
 		BoomEffect (damagePosition);

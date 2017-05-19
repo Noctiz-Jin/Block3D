@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviour {
 	[SerializeField]
 	private float staminaRecoverSpeed;
 
+	public bool isDying = false;
 	// Seed Capacity
 
 	// Seed Range
