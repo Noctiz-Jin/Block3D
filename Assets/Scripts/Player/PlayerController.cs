@@ -152,6 +152,12 @@ public class PlayerController : NetworkBehaviour {
 
 	void Dead() {
 
+		if (!isLocalPlayer) 
+		{
+			Destroy(gameObject);
+			return;
+		}
+
 		GameObject ghostGO = Instantiate(ghost, transform.Find("BodyCenter").position, Quaternion.identity) as GameObject;
 
 		ghostGO.name = "Ghost";
