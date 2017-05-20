@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerAction : MonoBehaviour {
+public class PlayerAction : NetworkBehaviour {
 
 	public GameObject seedPrefab;
 
@@ -10,17 +11,19 @@ public class PlayerAction : MonoBehaviour {
 	private Vector3 castPosition;
 	private List<GameObject> seeds;
 
-	private PlayerStats playStats;
+	private PlayerStats playerStats;
+	private NetworkInstanceId playerId;
 	void Start () {
 		obstacleHolder = GameObject.Find ("ObstacleLevel");
 		seeds = new List<GameObject> ();
 
-		playStats = GetComponent<PlayerStats> ();
+		playerStats = GetComponent<PlayerStats> ();
+		playerId = GetComponent<NetworkIdentity>().netId;
 	}
 
 	public void CastSeed (Transform playerTransform)
 	{
-		if (playStats.GetSeedNumber() <= 0) {
+		if (playerStats.GetSeedNumber() <= 0) {
 			return;
 		}
 
@@ -38,23 +41,30 @@ public class PlayerAction : MonoBehaviour {
 			}
 		}
 
-		playStats.CastSeed(1);
-
-		GameObject castSeed = Instantiate (seedPrefab, castPosition, Quaternion.identity);
-		castSeed.GetComponent<SeedController>().damageRange = playStats.GetSeedRange();
-		seeds.Add(castSeed);
-		castSeed.transform.SetParent (obstacleHolder.transform);
+		playerStats.CastSeed(1);
+		Debug.Log(playerId);
+		CmdCastSeed(playerId, castPosition);
 	}
 
+	[Command]
+	private void CmdCastSeed (NetworkInstanceId playerID, Vector3 castPosition)
+	{
+		GameObject castSeed = Instantiate (seedPrefab, castPosition, Quaternion.identity);
+		castSeed.GetComponent<SeedController>().Initialize(playerID, playerStats.GetSeedRange());
+		seeds.Add(castSeed);
+		castSeed.transform.SetParent (obstacleHolder.transform);
+
+		NetworkServer.Spawn(castSeed);
+	}
 
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.tag == "Pickable")
 		{
 			if (Random.Range(0, 2) == 0) {
-				playStats.AddSeedCapacity(1);
+				playerStats.AddSeedCapacity(1);
 			} else {
-				playStats.AddSeedRange(1);
+				playerStats.AddSeedRange(1);
 			}
 		}
 	}

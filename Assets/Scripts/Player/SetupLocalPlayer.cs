@@ -7,11 +7,9 @@ public class SetupLocalPlayer : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if (!isLocalPlayer)
+		if (isLocalPlayer)
 		{
-			GetComponent<PlayerController>().enabled = false;
-			GetComponent<PlayerStats>().enabled = false;
-			GetComponent<PlayerAction>().enabled = false;
+
 		}
 	}
 

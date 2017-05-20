@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class SeedController : MonoBehaviour {
+public class SeedController : NetworkBehaviour {
 
 	public float fuseTime = 2.42f;
 	[Range(0, 1)]
 	public float transparency = 0.5f;
-	public int damageRange = 1;
+	[SyncVar] public int damageRange = 1;
 	public ParticleSystem boom;
 
-	private Transform player;
+	[SerializeField]
+	[SyncVar] private NetworkInstanceId castPlayer;
 	private GameObject obstacleHolder;
 	private BoxCollider boxCollider;
 	private GameObject body;
@@ -18,11 +20,16 @@ public class SeedController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		obstacleHolder = GameObject.Find ("ObstacleLevel");
-		player = GameObject.Find ("Player").transform;
 		boxCollider = GetComponent<BoxCollider> ();
 		body = transform.Find("Cube").gameObject;
 		SetupTransparency(transparency);
 		StartCoroutine (BoomCoroutine () );
+	}
+
+	public void Initialize(NetworkInstanceId player, int damageRangeInt)
+	{
+		castPlayer = player;
+		damageRange = damageRangeInt;
 	}
 
 	public void TriggerBoom () {
@@ -118,7 +125,9 @@ public class SeedController : MonoBehaviour {
 			}
 		}
 
-		player.gameObject.GetComponent<PlayerStats>().SeedBoomRetrieve(1);
+
+
+		ClientScene.FindLocalObject(castPlayer).GetComponent<PlayerStats>().SeedBoomRetrieve(1);
 
 		Destroy(gameObject);
 	}
@@ -152,16 +161,20 @@ public class SeedController : MonoBehaviour {
 
 	bool HitPlayer(Vector3 damagePosition)
 	{
-		//GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-		Vector3 playerRoundPosition = MyTool.RoundPlayerPosition (player);
-
 		BoomEffect (damagePosition);
+		GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-		if (damagePosition == playerRoundPosition) {
-			player.GetComponent<PlayerController> ().Dying();
-			return true;
-		} else {
-			return false;
+		bool isHit = false;
+
+		foreach (GameObject go in players)
+		{
+			Vector3 playerRoundPosition = MyTool.RoundPlayerPosition (go.transform);
+			if (damagePosition == playerRoundPosition) {
+				go.GetComponent<PlayerController> ().Dying();
+				isHit = true;
+			}
 		}
+
+		return isHit;
 	}
 }

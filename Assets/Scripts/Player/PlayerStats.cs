@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PlayerStats : MonoBehaviour {
+public class PlayerStats : NetworkBehaviour {
 
 	// Stamima
 	[SerializeField]
@@ -68,6 +69,8 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	public void SeedBoomRetrieve (int value) {
-		seedCapacity.TextValue += value;
+		if (isLocalPlayer) {
+			seedCapacity.TextValue += value;
+		}
 	}
 }
