@@ -42,7 +42,6 @@ public class PlayerAction : NetworkBehaviour {
 		}
 
 		playerStats.CastSeed(1);
-		Debug.Log(playerId);
 		CmdCastSeed(playerId, castPosition);
 	}
 
@@ -59,8 +58,11 @@ public class PlayerAction : NetworkBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
+
+
 		if (other.gameObject.tag == "Pickable")
 		{
+			if (!isLocalPlayer) return;
 			if (Random.Range(0, 2) == 0) {
 				playerStats.AddSeedCapacity(1);
 			} else {

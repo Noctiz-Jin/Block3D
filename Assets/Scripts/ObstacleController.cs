@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class ObstacleController : MonoBehaviour {
 
@@ -15,18 +16,20 @@ public class ObstacleController : MonoBehaviour {
 	
 	public void HitDamage() {
 		
-		lotteryDropPickable();
-
 		blockDestroyEffect ();
-
+		
+		CmdLotteryDropPickable();
+		
 		Destroy(gameObject);
+
 	}
 
 	void blockDestroyEffect () {
 		Instantiate (blockDestroy, transform.position, Quaternion.Euler(-90 ,0 ,0));
 	}
 
-	void lotteryDropPickable () {
+
+	void CmdLotteryDropPickable () {
 
 		if (Random.Range(0, 2) == 1)
 		{
