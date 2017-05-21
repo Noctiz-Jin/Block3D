@@ -170,7 +170,7 @@ public class SeedController : NetworkBehaviour {
 		{
 			Vector3 playerRoundPosition = MyTool.RoundPlayerPosition (go.transform);
 			if (damagePosition == playerRoundPosition) {
-				go.GetComponent<PlayerController> ().Dying();
+				go.GetComponent<NOCPlayerController> ().Dying();
 				isHit = true;
 			}
 		}
