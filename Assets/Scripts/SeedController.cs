@@ -128,6 +128,7 @@ public class SeedController : NetworkBehaviour {
 
 
 		ClientScene.FindLocalObject(castPlayer).GetComponent<PlayerStats>().SeedBoomRetrieve(1);
+		ClientScene.FindLocalObject(castPlayer).GetComponent<PlayerAction>().RemoveSeedList(transform.position);
 
 		Destroy(gameObject);
 	}

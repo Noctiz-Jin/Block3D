@@ -9,13 +9,15 @@ public class PlayerAction : NetworkBehaviour {
 
 	private GameObject obstacleHolder;
 	private Vector3 castPosition;
-	private List<GameObject> seeds;
+	private List<Vector3> seeds;
 
 	private PlayerStats playerStats;
 	private NetworkInstanceId playerId;
+
+	private float castLastStep, castCooldown = 0.1f;
 	void Start () {
 		obstacleHolder = GameObject.Find ("ObstacleLevel");
-		seeds = new List<GameObject> ();
+		seeds = new List<Vector3> ();
 
 		playerStats = GetComponent<PlayerStats> ();
 		playerId = GetComponent<NetworkIdentity>().netId;
@@ -27,33 +29,50 @@ public class PlayerAction : NetworkBehaviour {
 			return;
 		}
 
+		if(Time.time - castLastStep <= castCooldown) {
+			return;
+		} else {
+			castLastStep = Time.time;
+		}
+
 		castPosition = MyTool.RoundPlayerPosition (playerTransform);
 
-		seeds.RemoveAll(i => i == null);
-		foreach (GameObject seed in seeds)
+		//seeds.RemoveAll(i => i == null);
+		foreach (Vector3 seed in seeds)
 		{
 			// stop duplicate casting
-			if (seed == null) {
-
-			} else {
-				if (seed.transform.position == castPosition)
+			if (seed == castPosition)
+			{
 				return;
 			}
 		}
 
 		playerStats.CastSeed(1);
-		CmdCastSeed(playerId, castPosition);
+		CmdCastSeed(playerId, castPosition, playerStats.GetSeedRange());
+		seeds.Add(castPosition);
+	}
+
+	public void RemoveSeedList(Vector3 seedPosToRemove)
+	{
+		seeds.RemoveAll(i => i == seedPosToRemove);
 	}
 
 	[Command]
-	private void CmdCastSeed (NetworkInstanceId playerID, Vector3 castPosition)
+	private void CmdCastSeed (NetworkInstanceId playerID, Vector3 castPosition, int seedRange)
 	{
 		GameObject castSeed = Instantiate (seedPrefab, castPosition, Quaternion.identity);
-		castSeed.GetComponent<SeedController>().Initialize(playerID, playerStats.GetSeedRange());
-		seeds.Add(castSeed);
-		castSeed.transform.SetParent (obstacleHolder.transform);
+		castSeed.GetComponent<SeedController>().Initialize(playerID, seedRange);
 
 		NetworkServer.Spawn(castSeed);
+		RpcAddSeed(castSeed, playerID);
+	}
+
+
+	[ClientRpc]
+	void RpcAddSeed(GameObject seed, NetworkInstanceId playerID)
+	{
+		if (playerID != GetComponent<NetworkIdentity>().netId) return;
+		seed.transform.SetParent (obstacleHolder.transform);
 	}
 
 	void OnTriggerEnter(Collider other)
